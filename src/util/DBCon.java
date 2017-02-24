@@ -1,5 +1,7 @@
 package util;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -14,13 +16,19 @@ public class DBCon {
 	public DBCon(){
 		 // create a database connection
         try {
-			connection = DriverManager.getConnection("jdbc:sqlite:C:/Windows/journal.db");
+        	File dir = new File("C:/DataBase");
+        	if(!dir.exists()) dir.mkdirs();
+        	
+        	File file = new File("C:/DataBase/journal.db");
+        	if(!file.exists()) file.createNewFile();
+			connection = DriverManager.getConnection("jdbc:sqlite:C:/DataBase/journal.db");
 	        statement = connection.createStatement();
 	        statement.setQueryTimeout(30);  // set timeout to 30 sec.
-	        statement.executeUpdate("create table if not exists journal (zbld string, zbmj string,"
-	        		+ "zbfj string, kssj string,jssj string, gzqk string,bxqk string, bz string,type string,)");
+	        statement.executeUpdate("create table if not exists journal (id text PRIMARY KEY, zbld text, zbmj text,"
+	        		+ "zbfj text, kssj long, jssj long, bxqk text, bz text, fssj long,"
+	        		+ "content text, type text, sxt text)");
 	        
-		} catch (SQLException e) {
+		} catch (SQLException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

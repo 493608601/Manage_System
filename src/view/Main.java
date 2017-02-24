@@ -59,7 +59,9 @@ public class Main extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
+				QueryJFram 	queryJFram = new QueryJFram();
+				queryJFram.setVisible(true);
+				queryJFram.setLocationRelativeTo(null);
 			}
 		});
 		
@@ -68,7 +70,9 @@ public class Main extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
+				AddJFram addJFram = new AddJFram();
+				addJFram.setVisible(true);
+				addJFram.setLocationRelativeTo(null);
 			}
 		});
 		
