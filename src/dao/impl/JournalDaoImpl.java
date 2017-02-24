@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.management.Notification;
-
 import dao.IJournalDao;
 import entity.Journal;
 import util.DBCon;
@@ -94,11 +92,107 @@ public class JournalDaoImpl implements IJournalDao {
 			 }
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			if(linsenter!=null) linsenter.onError();
 			e.printStackTrace();
+		}finally{
+			if(linsenter!=null) linsenter.onSuccess();
+			try{
+				    pstmt.close();
+				    dbCon.closeAll();
+			   }catch(Exception ex){
+				   
+			   }
 		}
-		
-		
 		return journals;
 	}
 
+	
+	@Override
+	public Journal queryForID(String id) {
+		 Journal journal = new Journal();
+		try {
+			String sql = "SELECT * FROM journal where id='"+id+"'";
+			pstmt = dbCon.getConnection().prepareStatement(sql);
+			ResultSet rs = pstmt.executeQuery();
+			journal.setId(rs.getString("id"));
+			journal.setZbld(rs.getString("zbld"));
+			journal.setZbmj(rs.getString("zbmj"));
+			journal.setZbfj(rs.getString("zbfj"));
+			journal.setKssj(rs.getLong("kssj"));
+			journal.setJssj(rs.getLong("jssj"));
+		    journal.setBxqk(rs.getString("bxqk"));
+		    journal.setBz(rs.getString("bz"));
+			journal.setFssj(rs.getLong("fssj"));
+			journal.setContent(rs.getString("content"));
+			journal.setType(rs.getString("type"));
+		    journal.setSxt(rs.getString("sxt"));
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			if(linsenter!=null) linsenter.onError();
+			e.printStackTrace();
+		}finally{
+			if(linsenter!=null) linsenter.onSuccess();
+			try{
+				    pstmt.close();
+				    dbCon.closeAll();
+			   }catch(Exception ex){
+				   
+			   }
+		}
+		return journal;
+	}
+	
+	@Override
+	public void update(Journal journal) {
+		// TODO Auto-generated method stub
+		String sql = "UPDATE journal SET "
+				+ "zbld='" + journal.getZbld() + "',"
+				+ "zbmj='" + journal.getZbmj() + "',"
+				+ "zbfj='" + journal.getZbfj() + "',"
+				+ "kssj= " + journal.getKssj() + " ,"
+				+ "jssj= " + journal.getJssj() + " ,"
+				+ "bxqk='" + journal.getBxqk() + "',"
+				+ "bz='"   + journal.getBz() + "',"
+				+ "fssj= " + journal.getFssj() + " ,"
+				+ "content='" + journal.getContent() + "',"
+				+ "type='" + journal.getType() + "',"
+				+ "sxt='"  + journal.getSxt() + "' where id='"+journal.getId()+"'";
+		
+		try {
+			dbCon.getConnection().createStatement().executeUpdate(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			if(linsenter!=null) linsenter.onError();
+			e.printStackTrace();
+		}finally{
+			if(linsenter!=null) linsenter.onSuccess();
+			try{
+				    pstmt.close();
+				    dbCon.closeAll();
+			   }catch(Exception ex){
+				   
+			   }
+		}
+	}
+	
+	@Override
+	public void deleteForID(String id) {
+		String sql = "delete from journal where id='"+id+"'";
+		try {
+			dbCon.getConnection().createStatement().executeUpdate(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			if(linsenter!=null) linsenter.onError();
+			e.printStackTrace();
+		}finally{
+			if(linsenter!=null) linsenter.onSuccess();
+			try{
+				    pstmt.close();
+				    dbCon.closeAll();
+			   }catch(Exception ex){
+				   
+			   }
+		}
+	}
 }

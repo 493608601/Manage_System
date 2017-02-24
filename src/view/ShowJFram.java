@@ -4,11 +4,7 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -25,7 +21,9 @@ import entity.Journal;
 import ui.DateChooserJButton;
 import util.DateUtils;
 
-public class AddJFram extends JFrame {
+import javax.swing.JButton;
+
+public class ShowJFram extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textZbld;
@@ -40,7 +38,6 @@ public class AddJFram extends JFrame {
 	private JLabel label_7;
 	private JTextArea textBz;
 	private JTextArea textBxqk;
-	private JButton btnSave;
 	private JLabel label_8;
 	private String[] type = {"侵财","扰序","纠纷","猥亵","求助","走失查找","丢手机","黑摩的","其他"};
 	private int count = 1;
@@ -48,35 +45,31 @@ public class AddJFram extends JFrame {
 	private JLabel label_9;
 	private JLabel label_10;
 	private JLabel label_11;
-	private List<DateChooserJButton> dateChooserJButtons = new ArrayList<>();
-	private List<JTextArea> jTextAreasContent = new ArrayList<>();
-	private List<JComboBox<String>>  jCBTypes = new ArrayList<>();
-	private List<JTextField> JTextCameras = new ArrayList<>();
+	private JButton btSave;
+	private JScrollPane scrollPane_1;
 	private JScrollPane scrollPane_2;
+	
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AddJFram frame = new AddJFram();
-					frame.setLocationRelativeTo(null);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					ShowJFram frame = new ShowJFram();
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
 	}
-	
 
 	/**
 	 * Create the frame.
 	 */
-	public AddJFram() {
-
+	public ShowJFram(String id) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1140, 590);
 		contentPane = new JPanel();
@@ -137,15 +130,6 @@ public class AddJFram extends JFrame {
 		endTime.setBounds(672, 101, 182, 24);
 		contentPane.add(endTime);
 		
-		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(206, 140, 709, 52);
-		contentPane.add(scrollPane_1);
-		
-		textBxqk = new JTextArea();
-		textBxqk.setFont(new Font("宋体", Font.PLAIN, 16));
-		textBxqk.setBounds(206, 140, 709, 52);
-		scrollPane_1.setViewportView(textBxqk);
-		
 		label_5 = new JLabel("\u5F53\u73ED\u5DE5\u4F5C\u60C5\u51B5\uFF1A");
 		label_5.setFont(new Font("宋体", Font.PLAIN, 16));
 		label_5.setBounds(40, 287, 136, 33);
@@ -161,19 +145,23 @@ public class AddJFram extends JFrame {
 		label_7.setBounds(40, 229, 76, 33);
 		contentPane.add(label_7);
 		
-		scrollPane_2 = new JScrollPane();
-		scrollPane_2.setBounds(206, 217, 709, 52);
-		contentPane.add(scrollPane_2);
+		scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(206, 140, 709, 52);
+		contentPane.add(scrollPane_1);
 		
 		textBz = new JTextArea();
 		textBz.setFont(new Font("宋体", Font.PLAIN, 16));
 		textBz.setBounds(206, 217, 709, 52);
-		scrollPane_2.setViewportView(textBz);
+		scrollPane_1.setViewportView(textBz);
 		
-		btnSave = new JButton("\u4FDD\u5B58");
-		btnSave.setBounds(998, 71, 76, 161);
-		btnSave.setFont(new Font("宋体", Font.PLAIN, 16));
-		contentPane.add(btnSave);
+		scrollPane_2 = new JScrollPane();
+		scrollPane_2.setBounds(206, 217, 709, 52);
+		contentPane.add(scrollPane_2);
+		
+		textBxqk = new JTextArea();
+		textBxqk.setFont(new Font("宋体", Font.PLAIN, 16));
+		textBxqk.setBounds(206, 140, 709, 52);
+		scrollPane_2.setViewportView(textBxqk);
 		
 		label_8 = new JLabel("\u7C7B\u578B\uFF1A");
 		label_8.setFont(new Font("宋体", Font.PLAIN, 16));
@@ -202,7 +190,6 @@ public class AddJFram extends JFrame {
 		dateNow.setFont(new Font("宋体", Font.PLAIN, 16));
 		dateNow.setBounds(40, 423, 182, 24);
 		contentPane.add(dateNow);
-		dateChooserJButtons.add(dateNow);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(254, 392, 450, 100);
@@ -210,7 +197,6 @@ public class AddJFram extends JFrame {
 		
 		JTextArea tAContent = new JTextArea();
 		scrollPane.setViewportView(tAContent);
-		jTextAreasContent.add(tAContent);
 		
 		
 		JComboBox<String> cbType = new JComboBox<String>();
@@ -220,35 +206,38 @@ public class AddJFram extends JFrame {
 			cbType.addItem(t);
 		}
 		contentPane.add(cbType);
-		jCBTypes.add(cbType);
 		
 		JTextField tFCamera = new JTextField();
 		tFCamera.setBounds(865, 425, 116, 24);
 		contentPane.add(tFCamera);
 		tFCamera.setColumns(10);
-		JTextCameras.add(tFCamera);
+		
+		btSave = new JButton("\u4FDD\u5B58");
+		btSave.setFont(new Font("宋体", Font.PLAIN, 16));
+		btSave.setBounds(974, 39, 76, 161);
+		contentPane.add(btSave);
 		
 		
-		JButton btnAddItem = new JButton("\u6DFB\u52A0");
-		btnAddItem.setBounds(998, 348, 93, 29);
-		contentPane.add(btnAddItem);
+		JournalDaoImpl impl = new JournalDaoImpl();
+		Journal journal = impl.queryForID(id);
 		
-		btnAddItem.addActionListener(new ActionListener() {
+		textZbld.setText(journal.getZbld());
+		textZbmj.setText(journal.getZbfj());
+		textZbfj.setText(journal.getZbfj());
+		startTime.setText(DateUtils.formatDateForTime(journal.getKssj()));
+		endTime.setText(DateUtils.formatDateForTime(journal.getJssj()));
+		textBxqk.setText(journal.getBxqk());
+		textBz.setText(journal.getBz());
+		dateNow.setText(DateUtils.formatDateForTime(journal.getFssj()));
+		tAContent.setText(journal.getContent());
+		cbType.setSelectedItem(journal.getType());
+		tFCamera.setText(journal.getSxt());
+		
+		btSave.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				addLayout();
-			}
-		});
-	
-		btnSave.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				List<Journal> journals = new ArrayList<>();
-				Journal journal  = new Journal();
 				journal.setZbld(textZbld.getText());
 				journal.setZbmj(textZbmj.getText());
 				journal.setZbfj(textZbfj.getText());
@@ -256,22 +245,12 @@ public class AddJFram extends JFrame {
 				journal.setJssj(DateUtils.parseLong(endTime.getText()));
 				journal.setBxqk(textBxqk.getText());
 				journal.setBz(textBz.getText());
-				
-				for(int i = 0;i< jTextAreasContent.size();i++ ){
-					if(jTextAreasContent.get(i).getText().trim().equals("")){
-						continue;
-					}
-					
-					Journal j = journal.clone();
-					j.setId(UUID.randomUUID().toString());
-					String time = dateChooserJButtons.get(i).getText();
-					long ms = DateUtils.parseLong(time);
-					j.setFssj(ms);
-					j.setContent(jTextAreasContent.get(i).getText());
-					j.setType(jCBTypes.get(i).getSelectedItem().toString());
-					j.setSxt(JTextCameras.get(i).getText());
-					journals.add(j);
-				}
+				String time = dateNow.getText();
+				long ms = DateUtils.parseLong(time);
+				journal.setFssj(ms);
+				journal.setContent(tAContent.getText());
+				journal.setType(cbType.getSelectedItem().toString());
+				journal.setSxt(tFCamera.getText());
 				
 				JournalDaoImpl imp = new JournalDaoImpl();
 				imp.setOnStatusLinsenter(new StatusLinsenter() {
@@ -279,17 +258,16 @@ public class AddJFram extends JFrame {
 					@Override
 					public void onSuccess() {
 						// TODO Auto-generated method stub
-						showDialog("保存成功");
+						showDialog("更新成功");
 					}
 					
 					@Override
 					public void onError() {
 						// TODO Auto-generated method stub
-						showDialog("保存失败");
+						showDialog("更新失败");
 					}
 				});
-				
-				imp.addAll(journals);
+				imp.update(journal);
 				
 			}
 		});
@@ -301,45 +279,5 @@ public class AddJFram extends JFrame {
 		if(result == JOptionPane.OK_OPTION){
 		    dispose();
 		}
-	}
-	
-	private void addLayout(){
-		
-		DateChooserJButton dateNow = new DateChooserJButton();
-		dateNow.setFont(new Font("宋体", Font.PLAIN, 16));
-		dateNow.setBounds(40, 423 + intemHeight * count, 182, 24);
-		contentPane.add(dateNow);
-		dateChooserJButtons.add(dateNow);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(254, 392 + intemHeight * count, 450, 100);
-		contentPane.add(scrollPane);
-		
-		JTextArea tAContent = new JTextArea();
-		scrollPane.setViewportView(tAContent);
-		jTextAreasContent.add(tAContent);
-		
-		
-		JComboBox<String> cbType = new JComboBox<String>();
-		cbType.setBounds(735, 423 + intemHeight * count, 105, 24);
-		cbType.setFont(new Font("宋体", Font.PLAIN, 16));
-		for(String t : type){
-			cbType.addItem(t);
-		}
-		contentPane.add(cbType);
-		jCBTypes.add(cbType);
-		
-		JTextField tFCamera = new JTextField();
-		tFCamera.setBounds(865, 425 + intemHeight * count, 116, 24);
-		contentPane.add(tFCamera);
-		tFCamera.setColumns(10);
-		JTextCameras.add(tFCamera);
-		
-		setBounds(100, 100, 1140, 590 + intemHeight * count);
-		
-		count++;
-		
-		contentPane.validate(); 
-		contentPane.repaint(); 
 	}
 }

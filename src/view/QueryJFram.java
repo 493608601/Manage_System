@@ -1,40 +1,36 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.jar.Attributes.Name;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowSorter;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import org.sqlite.SQLiteConfig.JournalMode;
-
 import dao.impl.JournalDaoImpl;
+import dao.impl.JournalDaoImpl.StatusLinsenter;
 import entity.Journal;
 import ui.CalendarPanel;
-import ui.DateChooserJButton;
 import ui.JournalTableModel;
-import ui.MyTableModel;
 import util.DateUtils;
-
-import javax.swing.JComboBox;
-import javax.swing.JButton;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 
 public class QueryJFram extends JFrame {
 
@@ -44,6 +40,9 @@ public class QueryJFram extends JFrame {
 	private String[] type = {"","侵财","扰序","纠纷","猥亵","求助","走失查找","丢手机","黑摩的","其他"};
 	private JTable jTable;
 	private JScrollPane scrollPane;
+	private JournalTableModel tableModel;
+	private String sql;
+	
 	
 	/**
 	 * Launch the application.
@@ -123,7 +122,7 @@ public class QueryJFram extends JFrame {
 		contentPane.add(btnQuery);
 		
 		
-		JournalTableModel tableModel = new JournalTableModel(journals);
+		tableModel = new JournalTableModel(journals);
 		jTable = new JTable();
 		jTable.setModel(tableModel);
 
@@ -142,10 +141,24 @@ public class QueryJFram extends JFrame {
         		// TODO Auto-generated method stub
         		if(e.getClickCount()==2){
         			
+        			int index = Integer.valueOf((String) jTable.getValueAt(jTable.getSelectedRow(), 0))-1;
+//        			System.out.println(journals.get(index).getId());
+        			String id = journals.get(index).getId();
+        			ShowJFram showJFram = new ShowJFram(id);
+        			showJFram.setVisible(true);
+        			showJFram.setLocationRelativeTo(null);
+        			showJFram.addWindowListener(new WindowAdapter() {
+        				@Override
+        				public void windowClosed(WindowEvent e) {
+        					// TODO Auto-generated method stub
+        					reloadData();
+        				}
+					});
         		}
         	}
 		});
 
+        
         
 		scrollPane = new JScrollPane(jTable);
 		scrollPane.setBounds(40, 93, 944, 427);
@@ -153,13 +166,17 @@ public class QueryJFram extends JFrame {
         scrollPane.setAutoscrolls(true);
 		contentPane.add(scrollPane);
 		
+		JButton btnDelete = new JButton("\u5220\u9664");
+		btnDelete.setBounds(1012, 93, 63, 55);
+		contentPane.add(btnDelete);
+		
 		btnQuery.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				long st = DateUtils.parseLong(startTime.getText(),"yyyy-MM-dd");
 				long et = DateUtils.parseLong(endTime.getText(),"yyyy-MM-dd") + 86400000;//加一天
-				String sql = "select * from journal where fssj BETWEEN "+st+" AND "+et;
+				sql = "select * from journal where fssj BETWEEN "+st+" AND "+et;
 				String name = null;
 				String type = null;
 				if(!textField.getText().equals("")){
@@ -171,17 +188,51 @@ public class QueryJFram extends JFrame {
 					 type = comboBox.getSelectedItem().toString();
 					 sql += " and type='"+type+"'";
 				}
-					
-				journals = new JournalDaoImpl().queryAll(sql);
 				
-				tableModel.setJournal(journals);
-				contentPane.add(scrollPane);
-//				contentPane.validate(); 
-//				contentPane.repaint(); 
+				reloadData();
 			}
 		});
 		
+		btnDelete.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if(jTable.getSelectedRow() == -1) return;
+				if(jTable.getSelectedRow() > jTable.getRowCount()) return;
+				int index = Integer.valueOf((String) jTable.getValueAt(jTable.getSelectedRow(), 0))-1;
+    			String id = journals.get(index).getId();
+    			JournalDaoImpl imp = new JournalDaoImpl();
+				imp.setOnStatusLinsenter(new StatusLinsenter() {
+					
+					@Override
+					public void onSuccess() {
+						// TODO Auto-generated method stub
+						showDialog("删除成功");
+						reloadData();
+					}
+					
+					@Override
+					public void onError() {
+						// TODO Auto-generated method stub
+						showDialog("删除失败");
+						reloadData();
+					}
+				});
+				
+				imp.deleteForID(id);
+			}
+		});
 		
 	}
+	
+	private void showDialog(String message){
+		JOptionPane.showConfirmDialog(null,message , "Message", JOptionPane.PLAIN_MESSAGE);
+	}
 
+	private void reloadData(){
+		journals = new JournalDaoImpl().queryAll(sql);
+		tableModel.setJournal(journals);
+		contentPane.add(scrollPane);
+	}
 }
