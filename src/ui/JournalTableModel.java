@@ -51,6 +51,7 @@ public class JournalTableModel extends AbstractTableModel {
 	
     //指定某列的类型:暂时都是字符串类型，
     public Class<?> getColumnClass(int columnIndex){
+    	if(columnIndex==0) return Integer.class;
        return String.class;
     }
 	
@@ -60,7 +61,7 @@ public class JournalTableModel extends AbstractTableModel {
       // 第几行，就是列表中的第几个UserInfo对象
        Journal journal=journals.get(rowIndex);
        if(columnIndex==0){//第一列是Journal对象的序号值
-           return "" + (rowIndex + 1);
+           return rowIndex + 1;
        }else if(columnIndex==1){//第二列是发生时间属性值
            return DateUtils.formatDateForTime(journal.getFssj());
        }else if(columnIndex==2){//第三列是值班辅警值

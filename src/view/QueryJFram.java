@@ -30,6 +30,7 @@ import dao.impl.JournalDaoImpl.StatusLinsenter;
 import entity.Journal;
 import ui.CalendarPanel;
 import ui.JournalTableModel;
+import ui.IntegerTableRenderer;
 import util.DateUtils;
 
 public class QueryJFram extends JFrame {
@@ -42,6 +43,7 @@ public class QueryJFram extends JFrame {
 	private JScrollPane scrollPane;
 	private JournalTableModel tableModel;
 	private String sql;
+	private JTextField tfSxt;
 	
 	
 	/**
@@ -118,7 +120,7 @@ public class QueryJFram extends JFrame {
 		contentPane.add(comboBox);
 		
 		JButton btnQuery = new JButton("\u67E5\u8BE2");
-		btnQuery.setBounds(953, 35, 122, 29);
+		btnQuery.setBounds(1011, 120, 63, 55);
 		contentPane.add(btnQuery);
 		
 		
@@ -134,6 +136,7 @@ public class QueryJFram extends JFrame {
         	jTable.getColumnModel().getColumn(i).setPreferredWidth(40);
         }
         jTable.setRowHeight(20);//设定每一列的高度
+        jTable.setDefaultRenderer(Integer.class, new IntegerTableRenderer());
         
         jTable.addMouseListener(new MouseAdapter() {
         	@Override
@@ -141,7 +144,7 @@ public class QueryJFram extends JFrame {
         		// TODO Auto-generated method stub
         		if(e.getClickCount()==2){
         			
-        			int index = Integer.valueOf((String) jTable.getValueAt(jTable.getSelectedRow(), 0))-1;
+        			int index =  (int)jTable.getValueAt(jTable.getSelectedRow(), 0) - 1;
 //        			System.out.println(journals.get(index).getId());
         			String id = journals.get(index).getId();
         			ShowJFram showJFram = new ShowJFram(id);
@@ -167,8 +170,18 @@ public class QueryJFram extends JFrame {
 		contentPane.add(scrollPane);
 		
 		JButton btnDelete = new JButton("\u5220\u9664");
-		btnDelete.setBounds(1012, 93, 63, 55);
+		btnDelete.setBounds(1011, 217, 63, 55);
 		contentPane.add(btnDelete);
+		
+		JLabel label_3 = new JLabel("\u6444\u50CF\u5934\uFF1A");
+		label_3.setFont(new Font("宋体", Font.PLAIN, 16));
+		label_3.setBounds(925, 35, 77, 33);
+		contentPane.add(label_3);
+		
+		tfSxt = new JTextField();
+		tfSxt.setColumns(10);
+		tfSxt.setBounds(1003, 40, 105, 24);
+		contentPane.add(tfSxt);
 		
 		btnQuery.addActionListener(new ActionListener() {
 
@@ -178,6 +191,7 @@ public class QueryJFram extends JFrame {
 				long et = DateUtils.parseLong(endTime.getText(),"yyyy-MM-dd") + 86400000;//加一天
 				sql = "select * from journal where fssj BETWEEN "+st+" AND "+et;
 				String name = null;
+				String sxt = null;
 				String type = null;
 				if(!textField.getText().equals("")){
 					name = textField.getText();
@@ -187,6 +201,11 @@ public class QueryJFram extends JFrame {
 				if(!comboBox.getSelectedItem().toString().equals("")){
 					 type = comboBox.getSelectedItem().toString();
 					 sql += " and type='"+type+"'";
+				}
+				
+				if(!tfSxt.getText().equals("")){
+					sxt = tfSxt.getText();
+					sql += " and sxt='"+sxt+"'";
 				}
 				
 				reloadData();

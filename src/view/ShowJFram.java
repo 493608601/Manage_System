@@ -222,7 +222,7 @@ public class ShowJFram extends JFrame {
 		Journal journal = impl.queryForID(id);
 		
 		textZbld.setText(journal.getZbld());
-		textZbmj.setText(journal.getZbfj());
+		textZbmj.setText(journal.getZbmj());
 		textZbfj.setText(journal.getZbfj());
 		startTime.setText(DateUtils.formatDateForTime(journal.getKssj()));
 		endTime.setText(DateUtils.formatDateForTime(journal.getJssj()));

@@ -199,13 +199,17 @@ public class AddJFram extends JFrame {
 		contentPane.add(label_11);
 		
 		DateChooserJButton dateNow = new DateChooserJButton();
+		dateNow.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
 		dateNow.setFont(new Font("宋体", Font.PLAIN, 16));
-		dateNow.setBounds(40, 423, 182, 24);
+		dateNow.setBounds(40, 403, 182, 24);
 		contentPane.add(dateNow);
 		dateChooserJButtons.add(dateNow);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(254, 392, 450, 100);
+		scrollPane.setBounds(253, 391, 450, 52);
 		contentPane.add(scrollPane);
 		
 		JTextArea tAContent = new JTextArea();
@@ -214,7 +218,7 @@ public class AddJFram extends JFrame {
 		
 		
 		JComboBox<String> cbType = new JComboBox<String>();
-		cbType.setBounds(735, 423, 105, 24);
+		cbType.setBounds(735, 403, 105, 24);
 		cbType.setFont(new Font("宋体", Font.PLAIN, 16));
 		for(String t : type){
 			cbType.addItem(t);
@@ -223,7 +227,7 @@ public class AddJFram extends JFrame {
 		jCBTypes.add(cbType);
 		
 		JTextField tFCamera = new JTextField();
-		tFCamera.setBounds(865, 425, 116, 24);
+		tFCamera.setBounds(868, 404, 116, 24);
 		contentPane.add(tFCamera);
 		tFCamera.setColumns(10);
 		JTextCameras.add(tFCamera);
@@ -307,12 +311,12 @@ public class AddJFram extends JFrame {
 		
 		DateChooserJButton dateNow = new DateChooserJButton();
 		dateNow.setFont(new Font("宋体", Font.PLAIN, 16));
-		dateNow.setBounds(40, 423 + intemHeight * count, 182, 24);
+		dateNow.setBounds(40, 403 + intemHeight * count, 182, 24);
 		contentPane.add(dateNow);
 		dateChooserJButtons.add(dateNow);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(254, 392 + intemHeight * count, 450, 100);
+		scrollPane.setBounds(253, 391 + intemHeight * count, 450, 52);
 		contentPane.add(scrollPane);
 		
 		JTextArea tAContent = new JTextArea();
@@ -321,7 +325,7 @@ public class AddJFram extends JFrame {
 		
 		
 		JComboBox<String> cbType = new JComboBox<String>();
-		cbType.setBounds(735, 423 + intemHeight * count, 105, 24);
+		cbType.setBounds(735, 403 + intemHeight * count, 105, 24);
 		cbType.setFont(new Font("宋体", Font.PLAIN, 16));
 		for(String t : type){
 			cbType.addItem(t);
@@ -330,7 +334,7 @@ public class AddJFram extends JFrame {
 		jCBTypes.add(cbType);
 		
 		JTextField tFCamera = new JTextField();
-		tFCamera.setBounds(865, 425 + intemHeight * count, 116, 24);
+		tFCamera.setBounds(865, 404 + intemHeight * count, 116, 24);
 		contentPane.add(tFCamera);
 		tFCamera.setColumns(10);
 		JTextCameras.add(tFCamera);
