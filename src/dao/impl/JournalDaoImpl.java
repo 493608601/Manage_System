@@ -166,10 +166,10 @@ public class JournalDaoImpl implements IJournalDao {
 			if(linsenter!=null) linsenter.onError();
 			e.printStackTrace();
 		}finally{
+		    if(linsenter!=null) linsenter.onSuccess();
 			try{
 				    pstmt.close();
 				    dbCon.closeAll();
-				    if(linsenter!=null) linsenter.onSuccess();
 			   }catch(Exception ex){
 				   
 			   }
@@ -186,9 +186,9 @@ public class JournalDaoImpl implements IJournalDao {
 			if(linsenter!=null) linsenter.onError();
 			e.printStackTrace();
 		}finally{
+			  if(linsenter!=null) linsenter.onSuccess();
 			try{
-				    dbCon.closeAll();
-				    if(linsenter!=null) linsenter.onSuccess();
+				    dbCon.closeAll();		  
 			   }catch(Exception ex){
 				   
 			   }
