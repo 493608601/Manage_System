@@ -1,12 +1,11 @@
 package ui;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 import entity.Journal;
 import util.DateUtils;
@@ -20,7 +19,7 @@ import util.DateUtils;
  */
 public class JournalTableModel extends AbstractTableModel {
 
-	private List<Journal> journals;
+	private List<Journal> journals = new ArrayList<>();
 	
 	public JournalTableModel(List<Journal> list) {
 		this.journals = list;

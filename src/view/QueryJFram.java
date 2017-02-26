@@ -128,9 +128,10 @@ public class QueryJFram extends JFrame {
 		jTable = new JTable();
 		jTable.setModel(tableModel);
 
-		RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(jTable.getModel());
-		jTable.setRowSorter(sorter);
-        
+//		RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(jTable.getModel());
+//		jTable.setRowSorter(sorter);
+        jTable.setAutoCreateRowSorter(true);
+		
 		//设每一列的宽度
         for(int i=0;i<jTable.getColumnCount();i++){
         	jTable.getColumnModel().getColumn(i).setPreferredWidth(40);
@@ -142,11 +143,11 @@ public class QueryJFram extends JFrame {
         	@Override
         	public void mouseClicked(MouseEvent e) {
         		// TODO Auto-generated method stub
-        		if(e.getClickCount()==2){
-        			
-        			int index =  (int)jTable.getValueAt(jTable.getSelectedRow(), 0) - 1;
+        		if(e.getClickCount()==2){        			
+//        			int index =  (int)jTable.getValueAt(jTable.getSelectedRow(), 0) - 1;
 //        			System.out.println(journals.get(index).getId());
-        			String id = journals.get(index).getId();
+        			String id = journals.get(jTable.convertRowIndexToModel(jTable.getSelectedRow())).getId();
+//        			String id = journals.get(index).getId();
         			ShowJFram showJFram = new ShowJFram(id);
         			showJFram.setVisible(true);
         			showJFram.setLocationRelativeTo(null);
@@ -193,7 +194,7 @@ public class QueryJFram extends JFrame {
 				String name = null;
 				String sxt = null;
 				String type = null;
-				if(!textField.getText().equals("")){
+				if(!textField.getText().trim().equals("")){
 					name = textField.getText();
 					sql += " and zbfj='"+name+"'";
 				}
@@ -203,7 +204,7 @@ public class QueryJFram extends JFrame {
 					 sql += " and type='"+type+"'";
 				}
 				
-				if(!tfSxt.getText().equals("")){
+				if(!tfSxt.getText().trim().equals("")){
 					sxt = tfSxt.getText();
 					sql += " and sxt='"+sxt+"'";
 				}
@@ -219,7 +220,8 @@ public class QueryJFram extends JFrame {
 				// TODO Auto-generated method stub
 				if(jTable.getSelectedRow() == -1) return;
 				if(jTable.getSelectedRow() > jTable.getRowCount()) return;
-				int index = Integer.valueOf((String) jTable.getValueAt(jTable.getSelectedRow(), 0))-1;
+
+				int index = (int)jTable.getValueAt(jTable.getSelectedRow(), 0) - 1;
     			String id = journals.get(index).getId();
     			JournalDaoImpl imp = new JournalDaoImpl();
 				imp.setOnStatusLinsenter(new StatusLinsenter() {
@@ -250,8 +252,11 @@ public class QueryJFram extends JFrame {
 	}
 
 	private void reloadData(){
+		
+		
 		journals = new JournalDaoImpl().queryAll(sql);
-		tableModel.setJournal(journals);
+		tableModel = new JournalTableModel(journals);
+		jTable.setModel(tableModel);
 		contentPane.add(scrollPane);
 	}
 }
